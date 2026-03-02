@@ -5,11 +5,14 @@ public class NotificationManager {
     
     public void send(String type, String message, String recipient) {
         if (type.equals("email")) {
-            new EmailService().send(message, recipient);
+            NotificationService svc = new EmailService();
+            svc.send(message, recipient);
         } else if (type.equals("sms")) {
-            new SMSService().send(message, recipient);
+            NotificationService svc = new SMSService();
+            svc.send(message, recipient);
         } else if (type.equals("push")) {
-            new PushService().send(message, recipient);
+            NotificationService svc = new PushService();
+            svc.send(message, recipient);
         }
     }
     

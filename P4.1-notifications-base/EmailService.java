@@ -1,5 +1,6 @@
 // EmailService.java - encapsula la lógica de envío de emails
-public class EmailService {
+public class EmailService implements NotificationService {
+    @Override
     public void send(String message, String recipient) {
         // Lógica específica de email
         System.out.println("Enviando email a " + recipient + ": " + message);
