@@ -6,10 +6,18 @@ public class Main {
     public static void main(String[] args) {
         NotificationManager manager = new NotificationManager();
         
+        // Configurar reintentos
+        manager.setMaxRetries(2);
+        manager.setRetryDelayMs(500); // 500 ms entre reintentos
+        
         // Ejemplos de uso individual
         manager.send("email", "Bienvenido al sistema", "usuario@email.com");
         manager.send("sms", "Tu código es 1234", "+34123456789");
         manager.send("push", "Tienes un nuevo mensaje", "user_device_001");
+        
+        System.out.println("\n--- Envío con reintentos (método individual) ---");
+        boolean success = manager.sendWithRetry("email", "Email importante con reintentos", "vip@email.com");
+        System.out.println("Resultado del envío con reintentos: " + (success ? "Exitoso" : "Fallido"));
         
         // Ejemplos de envío a múltiples destinatarios
         System.out.println("\n--- Envío masivo de emails ---");
@@ -36,5 +44,13 @@ public class Main {
             "device_004"
         );
         manager.sendToMultiple("push", "Actualización disponible", pushRecipients);
+        
+        System.out.println("\n--- Envío masivo con reintentos ---");
+        List<String> criticalRecipients = Arrays.asList(
+            "critical1@email.com",
+            "critical2@email.com",
+            "critical3@email.com"
+        );
+        manager.sendToMultipleWithRetry("email", "ALERTA CRÍTICA - Requiere confirmación", criticalRecipients);
     }
 }
