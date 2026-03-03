@@ -1,6 +1,7 @@
 // NotificationManager.java - Código a refactorizar
 import java.util.Map;
 import java.util.HashMap;
+import java.util.List;
 
 public class NotificationManager {
     private static final Logger logger = new Logger(NotificationManager.class);
@@ -36,7 +37,33 @@ public class NotificationManager {
         logger.info("Notificación enviada exitosamente - Tipo: " + type);
     }
 
-    // TODO: Añadir método para enviar a múltiples destinatarios
+    // Enviar a múltiples destinatarios
+    public void sendToMultiple(String type, String message, List<String> recipients) {
+        if (recipients == null || recipients.isEmpty()) {
+            logger.warning("Intento de enviar a lista vacía o nula");
+            return;
+        }
+        
+        if (!strategies.containsKey(type)) {
+            logger.error("Tipo de notificación desconocido: " + type);
+            return;
+        }
+        
+        logger.info("Iniciando envío masivo - Tipo: " + type + ", Destinatarios: " + recipients.size());
+        int successCount = 0;
+        
+        for (String recipient : recipients) {
+            try {
+                send(type, message, recipient);
+                successCount++;
+            } catch (Exception e) {
+                logger.error("Error al enviar a " + recipient + ": " + e.getMessage());
+            }
+        }
+        
+        logger.info("Envío masivo completado - Tipo: " + type + ", Exitosos: " + successCount + "/" + recipients.size());
+    }
+
     // TODO: Añadir sistema de reintentos
     // TODO: Añadir validación de parámetros
 }
