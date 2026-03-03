@@ -1,22 +1,17 @@
-// NotificationManager.java - Código a refactorizar
-import java.util.Map;
-import java.util.HashMap;
+// NotificationManager.java - Gestor de notificaciones con NotificationFactory
 import java.util.List;
 
 public class NotificationManager {
     private static final Logger logger = new Logger(NotificationManager.class);
-    // Strategy registry: map notification type -> service
-    private final Map<String, NotificationService> strategies = new HashMap<>();
+    private final NotificationFactory factory;
     // Configuración de reintentos
     private int maxRetries = 3;
     private long retryDelayMs = 1000; // 1 segundo
 
-    // Register default services so existing code keeps working
+    // Constructor - usa singleton de NotificationFactory
     public NotificationManager() {
-        register("email", new EmailService());
-        register("sms", new SMSService());
-        register("push", new PushService());
-        logger.info("NotificationManager inicializado con 3 servicios de notificación");
+        this.factory = NotificationFactory.getInstance();
+        logger.info("NotificationManager inicializado con NotificationFactory - Servicios disponibles: " + factory.getServiceCount());
     }
 
     // Configurar número máximo de reintentos
@@ -37,12 +32,7 @@ public class NotificationManager {
 
     // Allow callers to register or override strategies
     public void register(String type, NotificationService service) {
-        if (type == null || service == null) {
-            logger.warning("Intento de registrar servicio con tipo o servicio nulo");
-            return;
-        }
-        strategies.put(type, service);
-        logger.info("Servicio registrado: " + type + " -> " + service.getClass().getSimpleName());
+        factory.register(type, service);
     }
 
     public void send(String type, String message, String recipient) {
@@ -53,7 +43,7 @@ public class NotificationManager {
         }
         
         logger.debug("Enviando notificación - Tipo: " + type + ", Destinatario: " + recipient);
-        NotificationService svc = strategies.get(type);
+        NotificationService svc = factory.getService(type);
         if (svc == null) {
             logger.error("Tipo de notificación desconocido: " + type);
             return;
@@ -83,7 +73,7 @@ public class NotificationManager {
         while (attempt <= retries) {
             try {
                 logger.debug("Intento " + (attempt + 1) + "/" + (retries + 1) + " - Tipo: " + type + ", Destinatario: " + recipient);
-                NotificationService svc = strategies.get(type);
+                NotificationService svc = factory.getService(type);
                 if (svc == null) {
                     logger.error("Tipo de notificación desconocido: " + type);
                     return false;
@@ -118,7 +108,7 @@ public class NotificationManager {
             return;
         }
         
-        if (!strategies.containsKey(type)) {
+        if (!factory.isServiceRegistered(type)) {
             logger.error("Tipo de notificación desconocido: " + type);
             return;
         }
@@ -146,7 +136,7 @@ public class NotificationManager {
             return;
         }
         
-        if (!strategies.containsKey(type)) {
+        if (!factory.isServiceRegistered(type)) {
             logger.error("Tipo de notificación desconocido: " + type);
             return;
         }
@@ -169,5 +159,10 @@ public class NotificationManager {
     // Habilitar/deshabilitar persistencia de logs en archivo
     public static void setFileLoggingEnabled(boolean enabled) {
         Logger.setFileLoggingEnabled(enabled);
+    }
+
+    // Acceder a la factory para operaciones avanzadas
+    public NotificationFactory getFactory() {
+        return factory;
     }
 }
