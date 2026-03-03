@@ -27,6 +27,10 @@ public class NotificationManager {
 
     // Configurar delay entre reintentos (en milisegundos)
     public void setRetryDelayMs(long delayMs) {
+        if (!ParameterValidator.validateRetryDelay(delayMs)) {
+            logger.warning("Configuración de delay rechazada, manteniendo valor anterior: " + this.retryDelayMs + "ms");
+            return;
+        }
         this.retryDelayMs = delayMs;
         logger.debug("Delay entre reintentos configurado a: " + delayMs + "ms");
     }
@@ -42,6 +46,12 @@ public class NotificationManager {
     }
 
     public void send(String type, String message, String recipient) {
+        // Validar parámetros
+        if (!ParameterValidator.validateSendParameters(type, message, recipient)) {
+            logger.error("Parámetros inválidos para send() - No se realizará el envío");
+            return;
+        }
+        
         logger.debug("Enviando notificación - Tipo: " + type + ", Destinatario: " + recipient);
         NotificationService svc = strategies.get(type);
         if (svc == null) {
@@ -59,6 +69,16 @@ public class NotificationManager {
 
     // Enviar con reintentos automáticos con número personalizado de intentos
     public boolean sendWithRetry(String type, String message, String recipient, int retries) {
+        // Validar parámetros
+        if (!ParameterValidator.validateSendParameters(type, message, recipient)) {
+            logger.error("Parámetros inválidos para sendWithRetry() - No se realizará el envío");
+            return false;
+        }
+        if (!ParameterValidator.validateRetries(retries)) {
+            logger.error("Número de reintentos inválido: " + retries);
+            return false;
+        }
+        
         int attempt = 0;
         while (attempt <= retries) {
             try {
@@ -92,8 +112,9 @@ public class NotificationManager {
 
     // Enviar a múltiples destinatarios
     public void sendToMultiple(String type, String message, List<String> recipients) {
-        if (recipients == null || recipients.isEmpty()) {
-            logger.warning("Intento de enviar a lista vacía o nula");
+        // Validar parámetros
+        if (!ParameterValidator.validateSendToMultipleParameters(type, message, recipients)) {
+            logger.error("Parámetros inválidos para sendToMultiple() - No se realizará el envío");
             return;
         }
         
@@ -119,8 +140,9 @@ public class NotificationManager {
 
     // Enviar a múltiples destinatarios con reintentos
     public void sendToMultipleWithRetry(String type, String message, List<String> recipients) {
-        if (recipients == null || recipients.isEmpty()) {
-            logger.warning("Intento de enviar a lista vacía o nula");
+        // Validar parámetros
+        if (!ParameterValidator.validateSendToMultipleParameters(type, message, recipients)) {
+            logger.error("Parámetros inválidos para sendToMultipleWithRetry() - No se realizará el envío");
             return;
         }
         
@@ -144,6 +166,8 @@ public class NotificationManager {
         logger.info("Envío masivo con reintentos completado - Tipo: " + type + ", Exitosos: " + successCount + ", Fallos: " + failureCount + " de " + recipients.size());
     }
 
-    // TODO: Añadir validación de parámetros
-    // TODO: Persistencia de logs en archivo
+    // Habilitar/deshabilitar persistencia de logs en archivo
+    public static void setFileLoggingEnabled(boolean enabled) {
+        Logger.setFileLoggingEnabled(enabled);
+    }
 }
