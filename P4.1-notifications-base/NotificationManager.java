@@ -17,6 +17,7 @@ public class NotificationManager {
             // Código para notificación push
             System.out.println("Enviando push a " + recipient + ": " + message);
             // Lógica compleja de push aquí...
+            
         }
     }
     
