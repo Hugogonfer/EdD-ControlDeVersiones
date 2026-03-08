@@ -12,7 +12,7 @@ public class Book {
         this.available = true;
     }
     
-    // BUG 1: No hay getters/setters para todos los campos
+    // BUG 1: No hay getters/setters para todos los campos // SOLUCIONADO
     public String getTitle() { return title; }
     public String getAuthor() { return author; }
     public String getIsbn() { return isbn; }
@@ -24,12 +24,18 @@ public class Book {
     public void setAvailable(boolean available) { this.available = available; }
     
     public void borrow() {
-        // BUG 2: No valida si ya está prestado
+        // BUG 2: No valida si ya está prestado // SOLUCIONADO
+        if (!available) {
+            throw new IllegalStateException("Book is already borrowed");
+        }
         available = false;
     }
     
     public void returnBook() {
-        // BUG 3: No valida si ya estaba disponible
+        // BUG 3: No valida si ya estaba disponible // SOLUCIONADO
+        if (available) {
+            throw new IllegalStateException("Book is already available");
+        }
         available = true;
     }
 }
