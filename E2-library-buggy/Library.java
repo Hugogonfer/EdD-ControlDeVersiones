@@ -21,7 +21,7 @@ public class Library {
     public Book findBookByTitle(String title) {
         
         for (Book book : books) {
-            if (book.getTitle().equals(title)) {
+            if (book.getTitle().equalsIgnoreCase(title)) {
                 return book;
             }
         }

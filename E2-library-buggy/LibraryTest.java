@@ -166,8 +166,9 @@ public class LibraryTest {
         library.addBook(book);
         
         Book foundBook = library.findBookByTitle("clean code");
-        assertNull(foundBook, 
-            "La búsqueda actual es case-sensitive, no encuentra 'clean code'");
+        assertNotNull(foundBook, 
+            "La búsqueda debe ser case-insensitive y encontrar 'clean code'");
+        assertEquals(book, foundBook, "Debe retornar el libro correcto");
     }
     
     /**
@@ -179,8 +180,9 @@ public class LibraryTest {
         library.addBook(book);
         
         Book foundBook = library.findBookByTitle("CLEAN CODE");
-        assertNull(foundBook, 
-            "La búsqueda actual es case-sensitive, no encuentra 'CLEAN CODE'");
+        assertNotNull(foundBook, 
+            "La búsqueda debe ser case-insensitive y encontrar 'CLEAN CODE'");
+        assertEquals(book, foundBook, "Debe retornar el libro correcto");
     }
     
     /**
@@ -192,8 +194,9 @@ public class LibraryTest {
         library.addBook(book);
         
         Book foundBook = library.findBookByTitle("ThE PrAgMaTiC pRoGrAmMeR");
-        assertNull(foundBook, 
-            "La búsqueda actual es case-sensitive, no encuentra variaciones de Case");
+        assertNotNull(foundBook, 
+            "La búsqueda debe ser case-insensitive y encontrar variaciones de Case");
+        assertEquals(book, foundBook, "Debe retornar el libro correcto");
     }
     
     /**
@@ -225,7 +228,9 @@ public class LibraryTest {
         Book foundJava = library.findBookByTitle("java programming");
         Book foundPython = library.findBookByTitle("PYTHON BASICS");
         
-        assertNull(foundJava, "No debe encontrar 'java programming' (case-sensitive)");
-        assertNull(foundPython, "No debe encontrar 'PYTHON BASICS' (case-sensitive)");
+        assertNotNull(foundJava, "Debe encontrar 'java programming' (case-insensitive)");
+        assertNotNull(foundPython, "Debe encontrar 'PYTHON BASICS' (case-insensitive)");
+        assertEquals(book1, foundJava, "Debe retornar el primer libro");
+        assertEquals(book2, foundPython, "Debe retornar el segundo libro");
     }
 }
