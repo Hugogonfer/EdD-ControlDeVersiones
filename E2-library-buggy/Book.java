@@ -19,13 +19,17 @@ public class Book {
     public String getIsbn() { return isbn; }
     public boolean isAvailable() { return available; }
     
-    public void borrow() {
-        // BUG 2: No valida si ya está prestado
-        available = false;
+    public void borrow() { // FIX Bug 2 : Validar si esta availible
+        if (available) {
+            available = false;
+        }
     }
-    
-    public void returnBook() {
-        // BUG 3: No valida si ya estaba disponible
-        available = true;
+
+    public void returnBook() { // FIX Bug 3 : Validar si no esta availible
+        if (available) {
+        if (!available) {
+            available = true;
+        }
+    }
     }
 }
