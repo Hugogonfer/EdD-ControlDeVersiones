@@ -25,4 +25,11 @@ public class LibraryTest {
         assertNotNull(lib.findBookByIsbn(isbn));
         assertNull(lib.findBookByIsbn("non-existent"));
     }
+
+    @Test
+    public void testFindBookByTitleCaseInsensitive() {
+        Library lib = new Library();
+        lib.addBook(new Book("Padres", "Juan", "123"));
+        assertNotNull(lib.findBookByTitle("padres"));
+    }
 }
