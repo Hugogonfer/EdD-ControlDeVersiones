@@ -5,9 +5,23 @@ public class Library {
     private List<Book> books = new ArrayList<>();
     
     public void addBook(Book book) {
-        // BUG 4: Permite libros duplicados (mismo ISBN)
+       // FIX BUG 4: Prevenir duplicados usando el ISBN
+        if (findBookByIsbn(book.getIsbn()) != null) {
+            System.out.println("Error: No se puede agregar. El ISBN " + book.getIsbn() + " ya existe.");
+            return;
+        }
         books.add(book);
     }
+
+    public Book findBookByIsbn(String isbn) {
+        for (Book book : books) {
+            if (book.getIsbn().equals(isbn)) {
+                return book;
+            }
+        }
+        return null;
+    }
+    
     
     public Book findBookByTitle(String title) {
         // BUG 5: Sensible a mayúsculas/minúsculas

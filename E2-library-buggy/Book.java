@@ -15,7 +15,9 @@ public class Book {
     // BUG 1: No hay getters/setters para todos los campos
     public String getTitle() { return title; }
     public String getAuthor() { return author; }
-    // Faltan getIsbn() y isAvailable()
+    // FIX: Añadidos getters faltantes
+    public String getIsbn() { return isbn; }
+    public boolean isAvailable() { return available; }
     
     public void borrow() {
         // BUG 2: No valida si ya está prestado
