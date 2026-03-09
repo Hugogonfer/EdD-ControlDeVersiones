@@ -44,5 +44,13 @@ public class Library {
         return availableBooks;
     }
     
-    // BUG 8: Falta método para quitar libros
+    // FIX BUG 8: Falta método para quitar libros
+    public void removeBook(String isbn) {
+        for (int i = books.size() - 1; i >= 0; i--) {
+            if (books.get(i).getIsbn().equals(isbn)) {
+                books.remove(i);
+                break; 
+            }
+    }
+  }
 }
