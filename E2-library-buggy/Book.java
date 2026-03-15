@@ -17,7 +17,7 @@ public class Book {
     public String getAuthor() { return author; }
     public String getISBN() { return isbn;}
     public Boolean getAvailable() { return available;}
-    // Faltan getIsbn() y isAvailable()
+    // Faltan getIsbn() y isAvailable
     
     public void borrow() {
         // BUG 2: No valida si ya está prestado
