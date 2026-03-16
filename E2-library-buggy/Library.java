@@ -5,7 +5,7 @@ public class Library {
     private List<Book> books = new ArrayList<>();
     
     public void addBook(Book book) {
-        // BUG 4: CORREGIDO - Ahora valida que no existan duplicados (mismo ISBN)
+        // BUG 4: CORREGIDO Y REFACTORIZADO - Ahora valida que no existan duplicados (mismo ISBN)
         for (Book existingBook : books) {
             if (existingBook.getISBN().equals(book.getISBN())) {
                 throw new IllegalArgumentException("Ya existe un libro con el ISBN: " + book.getISBN());
