@@ -14,14 +14,71 @@ Esta práctica combina **depuración** y **control de versiones**. Para cada bug
 <details>
 <summary>Lista de bugs (SPOILER)</summary>
 
-1. Libros duplicados permitidos
-2. Búsqueda sensible a mayúsculas/minúsculas
-3. Puedes prestar un libro ya prestado
-4. Puedes devolver un libro ya disponible
-5. Listado de disponibles muestra todos
-6. Falta método para quitar libros
-7. Faltan getters importantes
+1. ✅ Libros duplicados permitidos - **CORREGIDO**
+2. ✅ Búsqueda sensible a mayúsculas/minúsculas - **CORREGIDO**
+3. ✅ Puedes prestar un libro ya prestado - **CORREGIDO**
+4. ✅ Puedes devolver un libro ya disponible - **CORREGIDO**
+5. Listado de disponibles muestra todos - **PENDIENTE**
+6. ✅ Falta método para quitar libros - **CORREGIDO (removeBook aggregado)**
+7. Faltan getters importantes - **PENDIENTE**
 </details>
+
+## Bugs Corregidos y Nuevas Funcionalidades
+
+### 1. Validación de Libros Duplicados
+- **Problema**: Se permitía agregar múltiples libros con el mismo ISBN
+- **Solución**: El método `addBook()` ahora valida que no exista un libro con el mismo ISBN
+- **Método**: `isDuplicateISBN(String isbn)` privado para validación
+
+### 2. Búsqueda Case-Insensitive
+- **Problema**: La búsqueda por título era sensible a mayúsculas/minúsculas
+- **Solución**: Se cambió `equals()` a `equalsIgnoreCase()` en `findBookByTitle()`
+- **Ejemplo**: Ahora "clean code", "CLEAN CODE" y "Clean Code" retornan el mismo libro
+
+### 3. Validación en borrow()
+- **Problema**: Se podía prestar un libro que ya estaba prestado
+- **Solución**: Valida que el libro esté disponible antes de prestarlo
+- **Excepción**: Lanza `IllegalStateException` si lo intentas
+
+### 4. Validación en returnBook()
+- **Problema**: Se podía devolver un libro que ya estaba disponible
+- **Solución**: Valida que el libro esté prestado antes de devolverlo
+- **Excepción**: Lanza `IllegalStateException` si lo intentas
+
+### 5. Método removeBook() (Nueva Funcionalidad)
+- **Descripción**: Permite eliminar un libro de la biblioteca por su ISBN
+- **Firma**: `public boolean removeBook(String isbn)`
+- **Retorna**: `true` si se eliminó, `false` si no existe
+
+## Métodos Disponibles en Library
+
+```java
+// Gestión de libros
+void addBook(Book book)                    // Agrega libro (evita duplicados)
+boolean removeBook(String isbn)            // Elimina libro por ISBN
+List<Book> getBooks()                      // Retorna todos los libros
+
+// Búsqueda
+Book findBookByTitle(String title)         // Búsqueda case-insensitive
+List<Book> findAvailableBooks()            // Lista libros disponibles
+
+// Utilidad privada
+private boolean isDuplicateISBN(String isbn)  // Verifica duplicados
+```
+
+## Métodos Disponibles en Book
+
+```java
+// Getters
+String getTitle()
+String getAuthor()
+String getISBN()
+Boolean getAvailable()
+
+// Operaciones
+void borrow()                              // Marca libro como prestado (valida estado)
+void returnBook()                          // Devuelve libro a disponible (valida estado)
+```
 
 ## Evidencias Requeridas
 Para cada bug, incluir en el PR:
