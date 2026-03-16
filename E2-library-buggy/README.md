@@ -1,43 +1,32 @@
-# Práctica Integrada: Biblioteca con Bugs
+Sistema de Gestión de Biblioteca (DAW)
+Este proyecto es una aplicación Java diseñada para gestionar un catálogo de libros, permitiendo operaciones básicas como añadir, buscar, prestar, devolver y eliminar ejemplares, garantizando la integridad de los datos.
 
-## Instrucciones Especiales
-Esta práctica combina **depuración** y **control de versiones**. Para cada bug:
+📋 Características Principales
+A continuación se detallan las funcionalidades implementadas tras la fase de corrección sistematizada:
 
-1. **IDENTIFÍCALO** con el debugger de VS Code
-2. **DOCUMÉNTALO** en Issues de GitHub
-3. **CREA UN TEST** que lo reproduzca
-4. **CORRÍGELO** en un commit separado
-5. **VERIFICA** que tu test ahora pasa
+    1. Gestión de Libros
+    Validación de ISBN Único: El sistema impide la inserción de libros duplicados basándose en su código ISBN.
 
-## Bugs Conocidos (¡No mires si quieres el desafío!)
-<!-- Esto está oculto en detalles -->
-<details>
-<summary>Lista de bugs (SPOILER)</summary>
+    Eliminación de Ejemplares: Se ha añadido la capacidad de retirar libros del catálogo de forma segura mediante su identificador único.
 
-1. Libros duplicados permitidos
-2. Búsqueda sensible a mayúsculas/minúsculas
-3. Puedes prestar un libro ya prestado
-4. Puedes devolver un libro ya disponible
-5. Listado de disponibles muestra todos
-6. Falta método para quitar libros
-7. Faltan getters importantes
-</details>
+    2. Sistema de Búsqueda Avanzada
+    Búsqueda por Título (Case-Insensitive): El buscador ignora la diferencia entre mayúsculas y minúsculas para facilitar la experiencia del usuario.
 
-## Evidencias Requeridas
-Para cada bug, incluir en el PR:
-- [ ] Screenshot del breakpoint
-- [ ] Screenshot de variables en el momento del error
-- [ ] Enlace al issue correspondiente
-- [ ] Código del test que lo reproduce
+    Búsqueda por ISBN: Método optimizado para encontrar ejemplares específicos rápidamente.
 
-## Estructura del repositorio
-```bash
-/E2-library-buggy/
-├── README.md
-├── .gitignore      # Archivos a ignorar (localizado en un directorio superior) 
-├── Main.java       # Punto de entrada
-├── Book.java
-├── Library.java
-├── E2-Full_Stack_Developer-Debug+Git.pdf
-└── /documentacion/    # Para las capturas de pantalla, entre otras las del debugger
-```
+    3. Control de Estado de Préstamos
+    Validación Lógica: Se han corregido errores de estado; ahora un libro no puede ser prestado si ya está fuera, ni devuelto si ya se encuentra en la biblioteca.
+
+    Filtrado de Disponibilidad: Capacidad para listar únicamente los libros que están listos para ser prestados en ese momento.
+
+🛠️ Estructura del Proyecto
+
+    Book.java: Define la entidad Libro con sus atributos (título, autor, ISBN) y lógica de estado.
+
+    Library.java: Contiene la lógica de negocio para la gestión de la colección.
+
+    LibraryApp.java: Clase principal para demostración y ejecución manual.
+
+    LibraryTest.java: Suite de pruebas unitarias para garantizar el correcto funcionamiento de las validaciones.
+    
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

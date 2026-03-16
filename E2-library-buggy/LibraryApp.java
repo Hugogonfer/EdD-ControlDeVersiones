@@ -21,6 +21,8 @@ public class LibraryApp {
             book.returnBook();
             book.returnBook(); // BUG: Devolver dos veces
         }
+
+       
         
         // Listar disponibles
         System.out.println("Libros disponibles: " + library.findAvailableBooks().size());
